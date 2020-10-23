@@ -11,7 +11,7 @@ $(function()
             $.ajax(
                 {
                     type: "POST", //POSTで渡す
-                    url: "add", //POST先
+                    url: "dataadd", //POST先
                     data:
                         {
                             "name":$('#name').val(), //名前

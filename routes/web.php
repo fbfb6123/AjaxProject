@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\dataaddcon;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,4 +23,5 @@ Route::get('dataadd', function()
     return view('dataadd'); //登録画面表示
 });
 
-Route::any('add','dataaddcon@add'); //データ登録
+
+Route::post('dataadd',[dataaddcon::class, 'add']); //データ登録
