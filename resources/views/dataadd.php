@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <title></title>
     <script type="text/javascript" src="js/add.js"></script> //ajax制御用
+    <script type="text/javascript" src="js/jquery-2.2.3.min.js"></script> //jquery
+
 </head>
 
 <body>
-
-
 名前を入力してください。
 <br><br>
 <input type="text" id="name" name="name"> //名前入力欄

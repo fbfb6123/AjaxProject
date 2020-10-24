@@ -8,6 +8,7 @@ use Response; //Response::makeのため
 use Input; //Input::getのため
 use DB; //DB操作のため
 
+
 class dataaddcon extends Controller
 {
     public function add()
@@ -20,7 +21,7 @@ class dataaddcon extends Controller
 
         try //実行
         {
-            DB::insert('insert into userTBL (NAME,PW) values (?,?)',[$name,md5($password)]); //データ登録
+            DB::insert('insert into user_TBL (NAME,PW) values (?,?)',[$name,md5($password)]); //データ登録
             return Response::make('0'); //データ登録成功
         }
         catch(Exception $e) //例外
