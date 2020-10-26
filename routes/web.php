@@ -30,6 +30,7 @@ Route::post('dataadd',[dataaddcon::class, 'add']); //データ登録
 
 //バリデーション用
 Route::resource('/sample',SampleController::class);
+Route::post('/sample/post', SampleController::class);
 
 Route::get('/form', function () {
     return view('form');
