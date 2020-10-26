@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\dataaddcon;
+use App\Http\Controllers\SampleController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,3 +27,6 @@ Route::get('dataadd', function()
 
 
 Route::post('dataadd',[dataaddcon::class, 'add']); //データ登録
+
+//バリデーション用
+Route::resource('/sample',SampleController::class);
