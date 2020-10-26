@@ -1,5 +1,5 @@
     <p>{{$msg}}</p>
-    <form action="/hello" method="post">
+    <form action="/sample" method="post">
         <table>
             @csrf
             <tr><th>name: </th><td><input type="text"

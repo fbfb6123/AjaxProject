@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fb75ec24-a982-4e24-b26a-70d7d2da719c" name="デフォルト変更リスト" comment="">
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/SampleController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/SampleController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/sample/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/sample/index.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -170,7 +170,7 @@
       <option name="presentableId" value="Default" />
       <updated>1603427308535</updated>
       <workItem from="1603427309722" duration="14661000" />
-      <workItem from="1603685363569" duration="2223000" />
+      <workItem from="1603685363569" duration="2534000" />
     </task>
     <servers />
   </component>

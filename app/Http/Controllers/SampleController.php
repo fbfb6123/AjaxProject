@@ -10,13 +10,13 @@ class SampleController extends Controller
         return view('sample/index', ['msg'=>'フォームを入力：']);
     }
 
-    public  function post(Request $request) {
+    public  function store(Request $request) {
         $validate_rure = [
             'name' => 'required',
             'mail' => 'email',
             'age' => 'numeric|between:0,150',
         ];
         $this->validate($request, $validate_rule);
-        return view('hello.index',['msg'=>'正しく入力されました']);
+        return view('sample/index',['msg'=>'正しく入力されました']);
     }
 }
