@@ -1,4 +1,3 @@
-@section('content')
     <p>{{$msg}}</p>
     <form action="/hello" method="post">
         <table>
@@ -15,4 +14,3 @@
                 value="send"></td></tr>
         </table>
     </form>
-@endsection
