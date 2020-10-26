@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
-use App\Http\Test;
+use App\Models\Test;
 
 class CsvImportController extends Controller
 {
