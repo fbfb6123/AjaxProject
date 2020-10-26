@@ -28,7 +28,7 @@
     </div>
 @endif
 
-<form action="/form/import-csv" method="post" enctype="multipart/form-data" id="csvUpload">
+<form action="/form" method="post" enctype="multipart/form-data" id="csvUpload">
     <input type="file" value="ファイルを選択" name="csv_file">
     {{ csrf_field() }}
     <button type="submit">インポート</button>

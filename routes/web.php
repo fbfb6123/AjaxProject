@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\dataaddcon;
 use App\Http\Controllers\SampleController;
+use App\Http\Controllers\CsvImportController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -31,8 +33,5 @@ Route::post('dataadd',[dataaddcon::class, 'add']); //データ登録
 //バリデーション用
 Route::resource('/sample',SampleController::class);
 
-Route::get('/form', function () {
-    return view('form');
-});
 
-Route::post('form/import-csv', 'CsvImportController@store');
+Route::resource('/form', CsvImportController::class);

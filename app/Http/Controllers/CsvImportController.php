@@ -10,6 +10,10 @@ use App\Models\Test;
 
 class CsvImportController extends Controller
 {
+
+    public function index(){
+        return view('form');
+    }
     /**
      * Store a newly created resource in storage.
      *
