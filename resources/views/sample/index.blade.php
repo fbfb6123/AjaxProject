@@ -1,4 +1,13 @@
     <p>{{$msg}}</p>
+    @if (count($errors) > 0)
+    <div>
+        <ul>
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
     <form action="/sample" method="post">
         <table>
             @csrf

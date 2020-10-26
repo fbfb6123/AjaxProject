@@ -11,7 +11,7 @@ class SampleController extends Controller
     }
 
     public  function store(Request $request) {
-        $validate_rure = [
+        $validate_rule = [
             'name' => 'required',
             'mail' => 'email',
             'age' => 'numeric|between:0,150',
