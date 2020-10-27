@@ -33,5 +33,8 @@ Route::post('dataadd',[dataaddcon::class, 'add']); //データ登録
 //バリデーション用
 Route::resource('/sample',SampleController::class);
 
-
-Route::resource('/form', CsvImportController::class);
+//CSV
+Route::get('/form', function () {
+    return view('practice2');
+});
+Route::get('/form',  [CsvImportController::class, 'practice2']);

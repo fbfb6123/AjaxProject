@@ -2,175 +2,157 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
-use App\Http\Controllers\Controller;
+use App\Models\CsvUser;
+use App\Models\Company;
 use App\Models\Test;
+use Illuminate\Validation\Rule;
+use Illuminate\Http\Request;
+use Goodby\CSV\Import\Standard\Lexer;
+use Goodby\CSV\Import\Standard\Interpreter;
+use Goodby\CSV\Import\Standard\LexerConfig;
+use App\Http\Requests\CompanyValidate;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
+
 
 class CsvImportController extends Controller
 {
-
-    public function index(){
+    public function practice2()
+    {
         return view('form');
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+
+    public function upload_regist(Request $rq)
     {
-        // アップロードファイルに対してのバリデート
-        $validator = $this->validateUploadFile($request);
+        if ($rq->hasFile('csv') && $rq->file('csv')->isValid()) {
+            // CSV ファイル保存
+            $tmpname = uniqid("CSVUP_") . "." . $rq->file('csv')->guessExtension(); //TMPファイル名
+            $rq->file('csv')->move(public_path() . "/csv/tmp", $tmpname);
+            $tmppath = public_path() . "/csv/tmp/" . $tmpname;
 
-        if ($validator->fails() === true){
-            return redirect('/form')->with('message', $validator->errors()->first('csv_file'));
-        }
+            // Goodby CSVの設定
+            $config_in = new LexerConfig();
+            $config_in
+                ->setFromCharset("SJIS-win")
+                ->setToCharset("UTF-8") // CharasetをUTF-8に変換
+                ->setIgnoreHeaderLine(true) //CSVのヘッダーを無視
+            ;
+            $lexer_in = new Lexer($config_in);
 
-        // CSVファイルをサーバーに保存
-        $temporary_csv_file = $request->file('csv_file')->store('csv');
+            $datalist = array();
 
-        $fp = fopen(storage_path('app/') . $temporary_csv_file, 'r');
+            $interpreter = new Interpreter();
+            $interpreter->addObserver(function (array $row) use (&$datalist) {
+                // 各列のデータを取得
+                $datalist[] = $row;
+            });
 
-        // 一行目（ヘッダ）読み込み
-        $headers = fgetcsv($fp);
+            // CSVデータをパース
+            $lexer_in->parse($tmppath, $interpreter);
 
-        $column_names = [];
+            // TMPファイル削除
+            unlink($tmppath);
 
-        // CSVヘッダ確認
-        foreach ($headers as $header) {
-            $result = Test::retrieveTestColumnsByValue($header, 'SJIS-win');
-            if ($result === null) {
-                fclose($fp);
-                Storage::delete($temporary_csv_file);
-                return redirect('/form')
-                    ->with('message', '登録に失敗しました。CSVファイルのフォーマットが正しいことを確認してださい。');
+            // 処理
+            foreach ($datalist as $row) {
+                // 各データ取り出し
+                $csv_user = $this->get_csv_user($row);
+
+                // DBへの登録
+                $this->regist_user_csv($csv_user);
             }
-            $column_names[] = $result;
+            return redirect('/csv/practice2')->with('flashmessage', 'CSVのデータを読み込みました。');
         }
-
-        $registration_errors_list = [];
-        $update_errors_list       = [];
-        $i = 0;
-
-        // TODO:サイズが大きいCSVファイルを読み込む場合、この処理ではメモリ不足になる可能性がある為改修が必要になる
-        while ($row = fgetcsv($fp)) {
-
-            // Excelで編集されるのが多いと思うのでSJIS-win→UTF-8へエンコード
-            mb_convert_variables('UTF-8', 'SJIS-win', $row);
-            $is_registration_row = false;
-
-            foreach ($column_names as $column_no => $column_name) {
-
-                // idがなければ登録、あれば更新と判断
-                if ($column_name === 'id' && $row[$column_no] === '') {
-                    $is_registration_row = true;
-                }
-
-                // 新規登録か更新かのチェック
-                if($is_registration_row === true){
-                    if ($column_name !== 'id') {
-                        $registration_csv_list[$i][$column_name] = $row[$column_no] === '' ? null : $row[$column_no];
-                    }
-                } else {
-                    $update_csv_list[$i][$column_name] = $row[$column_no] === '' ? null : $row[$column_no];
-                }
-
-            }
-
-            // バリデーションチェック
-            $validator = \Validator::make(
-                $is_registration_row === true ? $registration_csv_list[$i] : $update_csv_list[$i],
-                $this->defineValidationRules(),
-                $this->defineValidationMessages()
-            );
-
-            if ($validator->fails() === true) {
-                if ($is_registration_row === true) {
-                    $registration_errors_list[$i + 2] = $validator->errors()->all();
-                } else {
-                    $update_errors_list[$i + 2] = $validator->errors()->all();
-                }
-            }
-
-            $i++;
-        }
-
-        // バリデーションエラーチェック
-        if (count($registration_errors_list) > 0 || count($update_errors_list) > 0) {
-            return redirect('/form')
-                ->with('errors', ['registration_errors' => $registration_errors_list, 'update_errors' => $update_errors_list]);
-        }
-
-        // 既存更新処理
-        if (isset($update_csv_list) === true) {
-            foreach ($update_csv_list as $update_csv) {
-                // ～更新用の処理～
-                if ($this->fill($update_csv)->save() === false) {
-                    return redirect('/form')
-                        ->with('message', '既存データの更新に失敗しました。（新規登録処理は行われずに終了しました）');
-                }
-            }
-        }
-
-        // 新規登録処理
-        if (isset($registration_csv_list) === true) {
-            foreach ($registration_csv_list as $registration_csv) {
-                // ～登録用の処理～
-                if ($this->fill($registration_csv)->save() === false) {
-                    return redirect('/form')->with('message', '新規登録処理に失敗しました。');
-                }
-            }
-        }
-
-        return redirect('/form')->with('message', 'CSV登録が完了しました。' );
+        return redirect('/csv/practice2')->with('flashmessage', 'CSVの送信エラーが発生しましたので、送信を中止しました。');
     }
 
-    /**
-     * アップロードファイルのバリデート
-     * （※本来はFormRequestClassで行うべき）
-     *
-     * @param Request $request
-     * @return Illuminate\Validation\Validator
-     */
-    private function validateUploadFile(Request $request)
+
+
+    private function get_csv_user($row)
     {
-        return \Validator::make($request->all(), [
-            'csv_file' => 'required|file|mimetypes:text/plain|mimes:csv,txt',
-        ], [
-                'csv_file.required'  => 'ファイルを選択してください。',
-                'csv_file.file'      => 'ファイルアップロードに失敗しました。',
-                'csv_file.mimetypes' => 'ファイル形式が不正です。',
-                'csv_file.mimes'     => 'ファイル拡張子が異なります。',
-            ]
+        $user = array(
+
+            //CSVuser用
+            'name' => $row[0],
+            'email' => $row[1],
+            'tel' => $row[2],
+
+
+            //Company用の配列作成
+            /*'company_name' => $row[0],
+            'company_name_kana' => $row[1],
+            'company_name_en' => $row[2],
+            'company_manager_user_id' => $row[3],
+            'dex_res_id' => $row[4],
+            'dex_login_user_id' => $row[5],
+            'dex_login_password_id' => $row[6],
+            'zip_code' => $row[7],
+            'address_1' => $row[8],
+            'address_2' => $row[9],
+            'manager_user_id' => $row[10],
+            'tel_no' => $row[11],
+            'fax_no' => $row[12],
+            'mailaddress' => $row[13],
+            'url' => $row[14],
+            'del_flag' => $row[15],
+            'created_by' => $row[16],
+            'created_at' => $row[17],
+            'create_function_id' => $row[18],
+            'updated_by' => $row[19],
+            'updated_at' => $row[20],
+            'update_function_id' => $row[21],*/
+
+
         );
+
+        return $user;
     }
 
-    /**
-     * バリデーションの定義
-     *
-     * @return array
-     */
-    private function defineValidationRules()
+    private function regist_user_csv($user)
     {
-        return [
-            // CSVデータ用バリデーションルール
-            'content' => 'required',
-        ];
-    }
+        info($user);
+        //ここに$userをチェックするバリデーションをかける？
+        //参考URL　https://laracasts.com/discuss/channels/general-discussion/class-apphttpcontrollersvalidator-not-found
+        //https://readouble.com/laravel/5.5/ja/validation.html#automatic-redirection
+        //https://qiita.com/ryo-futebol/items/e2b801675d76613c8fad
 
-    /**
-     * バリデーションメッセージの定義
-     *
-     * @return array
-     */
-    private function defineValidationMessages()
-    {
-        return [
-            // CSVデータ用バリデーションエラーメッセージ
-            'content.required' => '内容を入力してください。',
-        ];
+
+        //今回は配列をバリデーションチェックしたいためmakeメソッドで新しいインスタンスを作成しバリデーションしている
+        $validator = Validator::make($user, [
+            'name' => 'string',//integerだとはじかれる  stringだと通ります
+            'email' => 'required',
+            'tel' => 'required',
+        ])->validate();
+
+        /*$validate_rule = [
+            array(
+                'name' => 'required',
+                'email' => 'email',
+                'tel' => 'required',
+            )];
+
+        $this->validate($user, $validate_rule);*/
+
+        /*   $validator = Validator::make($user->all(), [
+               'name' => 'required',
+               'email' => 'email',
+               'tel' => 'required',
+           ]);*/
+
+        /*        $validator = Validator::make($user->all(), [
+                    'name' => 'required',
+                    'email' => 'email',
+                    'tel' => 'required',
+                ]);*/
+
+
+        $newuser = new CsvUser;
+        foreach ($user as $key => $value) {
+            $newuser->$key = $value;
+        }
+        $newuser->save();
     }
 }
+
