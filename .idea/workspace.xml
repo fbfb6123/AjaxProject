@@ -3,7 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="fb75ec24-a982-4e24-b26a-70d7d2da719c" name="デフォルト変更リスト" comment="">
       <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/database/migrations/2020_10_23_045705_create_user_t_b_l_table.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/AjaxProject.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/AjaxProject.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,6 +130,8 @@
       <path value="$PROJECT_DIR$/vendor/ramsey/collection" />
       <path value="$PROJECT_DIR$/vendor/opis/closure" />
       <path value="$PROJECT_DIR$/vendor/mockery/mockery" />
+      <path value="$PROJECT_DIR$/vendor/league/mime-type-detection" />
+      <path value="$PROJECT_DIR$/vendor/goodby/csv" />
     </include_path>
   </component>
   <component name="ProjectId" id="1jGPA8j8PlcF06okmHIog0FgYTB" />
@@ -171,7 +177,7 @@
       <updated>1603427308535</updated>
       <workItem from="1603427309722" duration="14661000" />
       <workItem from="1603685363569" duration="9869000" />
-      <workItem from="1603757592473" duration="5160000" />
+      <workItem from="1603757592473" duration="5793000" />
     </task>
     <servers />
   </component>
