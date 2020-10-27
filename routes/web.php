@@ -34,7 +34,6 @@ Route::post('dataadd',[dataaddcon::class, 'add']); //データ登録
 Route::resource('/sample',SampleController::class);
 
 //CSV
-Route::get('/form', function () {
-    return view('practice2');
-});
+Route::namespace('csv')->group(function () {
 Route::get('/form',  [CsvImportController::class, 'practice2']);
+});

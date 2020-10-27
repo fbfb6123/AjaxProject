@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CsvImportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,4 +19,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::namespace('csv')->group(function () {
 Route::match(['get', 'post'], '/csv/upload_regist', [CsvImportController::class, 'upload_regist']); //登録
+});

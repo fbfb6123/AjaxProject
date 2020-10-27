@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fb75ec24-a982-4e24-b26a-70d7d2da719c" name="デフォルト変更リスト" comment="">
+      <change afterPath="$PROJECT_DIR$/app/Models/CsvUser.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -173,7 +176,7 @@
       <updated>1603427308535</updated>
       <workItem from="1603427309722" duration="14661000" />
       <workItem from="1603685363569" duration="9869000" />
-      <workItem from="1603757592473" duration="6456000" />
+      <workItem from="1603757592473" duration="8332000" />
     </task>
     <servers />
   </component>
