@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\CsvUser;
 use App\Models\Company;
 use App\Models\Test;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use Goodby\CSV\Import\Standard\Lexer;
@@ -18,18 +21,93 @@ use Illuminate\Support\Facades\Validator;
 
 class CsvImportController extends Controller
 {
-    public function practice2()
+    // 定数
+    public static $const;
+    // 部分一致検索対象
+    public static $model;
+    // 認証済みユーザ情報
+    public static $user;
+
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+
+    /**
+     * constructor.
+     */
+    public function __construct()
     {
-        return view('form');
+        static::$const = Config('const');
+    }
+
+    public function index(Request $request)
+    {
+        return view('stub/index');
+    }
+
+    public function upload(Request $request)
+    {
+        try {
+            if ($request->hasFile('image')) {
+                // ファイル保管
+                // 参考URL:https://readouble.com/laravel/8.x/ja/filesystem.html
+                $uploadFile = $request->file("image");
+                Log::debug('★アップロードファイル名：' . $uploadFile->getClientOriginalName());
+                if ($uploadFile->isValid()) {
+                    // Case1.別名で保存
+                    $savePath = Storage::putFileAs(
+                        'public/uploads',
+                        $uploadFile,
+                        date('YmdHis') . '.' . $uploadFile->extension()
+                    );
+                    // Case2.laravel自動命名ファイル名で保存
+                    // $savePath = $uploadFile->store('public/uploads');
+                    Log::debug('★保管パス：/storage/app/' . $savePath);
+                } else {
+                    Log::error('★アップロード失敗みたいよ★');
+                    $ret = $this->setJsonMessage((int) $this->getCode('_FAILURE_'), (array) []);
+                    $ret = [
+                        'status'  => 9,
+                        'message' => 'ファイルのアップロードに失敗したよ',
+                    ];
+                    return response()->json($ret);
+                }
+            } else {
+                Log::debug('★アップロードファイルないよ★');
+            }
+
+            $ret = [
+                'status'  => 0,
+                'massage' => $savePath,
+            ];
+            Log::debug($ret);
+        } catch (\Exception $ex) {
+            $ret = [
+                'status'  => 9,
+                'message' => $ex->getMessage(),
+            ];
+            Log::error($ex);
+        }
+
+        return response()->json($ret);
     }
 
 
-    public function upload_regist(Request $rq)
+    /**
+     * @return
+     * @author  koutaro_ikeda <koutaro_ikeda@s-cubed.co.jp>
+     * CSVファイルAjaxインポート
+     */
+    public function practice2()
     {
-        if ($rq->hasFile('csv') && $rq->file('csv')->isValid()) {
+        return view('practice2');
+    }
+
+
+    public function upload_regist(Request $request)
+    {
+        if ($request->hasFile('csv') && $request->file('csv')->isValid()) {
             // CSV ファイル保存
-            $tmpname = uniqid("CSVUP_") . "." . $rq->file('csv')->guessExtension(); //TMPファイル名
-            $rq->file('csv')->move(public_path() . "/csv/tmp", $tmpname);
+            $tmpname = uniqid("CSVUP_") . "." . $request->file('csv')->guessExtension(); //TMPファイル名
+            $request->file('csv')->move(public_path() . "/csv/tmp", $tmpname);
             $tmppath = public_path() . "/csv/tmp/" . $tmpname;
 
             // Goodby CSVの設定
@@ -42,7 +120,6 @@ class CsvImportController extends Controller
             $lexer_in = new Lexer($config_in);
 
             $datalist = array();
-
             $interpreter = new Interpreter();
             $interpreter->addObserver(function (array $row) use (&$datalist) {
                 // 各列のデータを取得
@@ -75,13 +152,13 @@ class CsvImportController extends Controller
         $user = array(
 
             //CSVuser用
-            'name' => $row[0],
+            /*'name' => $row[0],
             'email' => $row[1],
-            'tel' => $row[2],
+            'tel' => $row[2],*/
 
 
             //Company用の配列作成
-            /*'company_name' => $row[0],
+            'company_name' => $row[0],
             'company_name_kana' => $row[1],
             'company_name_en' => $row[2],
             'company_manager_user_id' => $row[3],
@@ -102,7 +179,7 @@ class CsvImportController extends Controller
             'create_function_id' => $row[18],
             'updated_by' => $row[19],
             'updated_at' => $row[20],
-            'update_function_id' => $row[21],*/
+            'update_function_id' => $row[21],
 
 
         );
@@ -120,39 +197,49 @@ class CsvImportController extends Controller
 
 
         //今回は配列をバリデーションチェックしたいためmakeメソッドで新しいインスタンスを作成しバリデーションしている
-        $validator = Validator::make($user, [
-            'name' => 'string',//integerだとはじかれる  stringだと通ります
+        /*CSV用*/
+        /*$validator = Validator::make($user, [
+            'name' => 'integer',//integerだとはじかれる  stringだと通ります
             'email' => 'required',
             'tel' => 'required',
+        ])->validate();*/
+
+
+        /*事業者用*/
+        $validator = Validator::make($user, [
+            'company_name' => 'string',
+            'company_name_kana' => 'string',
+            'company_name_en' => 'string',
+            'company_manager_user_id' => 'integer',
+            'dex_res_id' => 'string',
+            'dex_login_user_id' => 'string',
+            'dex_login_password_id' => 'string',
+            'zip_code' => 'string',
+            'address_1' => 'string',
+            'address_2' => 'string',
+            'manager_user_id' => 'integer',
+            'tel_no' => 'string',
+            'fax_no' => 'string',
+            'mailaddress' => 'string',
+            'url' => 'string',
+            'del_flag' => 'integer',
+            'created_by' => 'required',
+            'created_at' => 'required',
+            'create_function_id' => 'string',
+            'updated_by' => 'integer',
+            'updated_at' => 'required',
+            'update_function_id' => 'string',
         ])->validate();
 
-        /*$validate_rule = [
-            array(
-                'name' => 'required',
-                'email' => 'email',
-                'tel' => 'required',
-            )];
-
-        $this->validate($user, $validate_rule);*/
-
-        /*   $validator = Validator::make($user->all(), [
-               'name' => 'required',
-               'email' => 'email',
-               'tel' => 'required',
-           ]);*/
-
-        /*        $validator = Validator::make($user->all(), [
-                    'name' => 'required',
-                    'email' => 'email',
-                    'tel' => 'required',
-                ]);*/
 
 
-        $newuser = new CsvUser;
+
+        Log::debug($user);
+
+        $newuser = new Company;
         foreach ($user as $key => $value) {
             $newuser->$key = $value;
         }
         $newuser->save();
     }
 }
-
