@@ -2,8 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Common;
-use App\Utils\Company as CompanyUtil;
+use Illuminate\Database\Eloquent\Model;
 
 
 /**
@@ -15,9 +14,8 @@ use App\Utils\Company as CompanyUtil;
  * @author  katsumi_wakamatsu <katsumi_wakamatsu@s-cubed.co.jp>
  *
  */
-class Company extends Common
+class Company extends Model
 {
-    use CompanyUtil;
 
     // 事業者マスタ用共通関数（ビジネスロジック）
 

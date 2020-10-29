@@ -2,21 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CsvUser;
 use App\Models\Company;
-use App\Models\Test;
+use Goodby\CSV\Import\Standard\Interpreter;
+use Goodby\CSV\Import\Standard\Lexer;
+use Goodby\CSV\Import\Standard\LexerConfig;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Validation\Rule;
+use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
-use Goodby\CSV\Import\Standard\Lexer;
-use Goodby\CSV\Import\Standard\Interpreter;
-use Goodby\CSV\Import\Standard\LexerConfig;
-use App\Http\Requests\CompanyValidate;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use League\Flysystem\Config;
 
 
 class CsvImportController extends Controller
@@ -98,7 +96,7 @@ class CsvImportController extends Controller
      */
     public function practice2()
     {
-        return view('practice2');
+        return view('form');
     }
 
 
@@ -142,7 +140,7 @@ class CsvImportController extends Controller
             }
             return response()->json($csv_user);
         }
-        return redirect('/csv/practice2')->with('flashmessage', 'CSVの送信エラーが発生しましたので、送信を中止しました。');
+        return redirect('form')->with('flashmessage', 'CSVの送信エラーが発生しましたので、送信を中止しました。');
     }
 
 
