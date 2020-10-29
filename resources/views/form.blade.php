@@ -2,7 +2,6 @@
     <h1>Laravel で CSV インポート 演習</h1>
     <p>CSVファイルを csv_users テーブルに登録します。</p>
 
-    <script type="text/javascript" src="../js/plugins/jquery.min.js"></script>
 
 
     <script type="text/javascript">
@@ -29,9 +28,11 @@
                 .done(function(data){
                     // data = JSON.parse(data);
                     console.log(data);
+                    console.log('成功');
                 })
                 .fail(function(XMLHttpRequest, textStatus, errorThrown) {
                     console.log(errorThrown);
+                    console.log('失敗だ');
                 });
         };
     </script>

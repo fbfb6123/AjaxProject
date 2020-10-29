@@ -63,7 +63,7 @@ class CsvImportController extends Controller
                 // DBへの登録
                 $this->regist_user_csv($csv_user);
             }
-            return redirect('/csv/practice2')->with('flashmessage', 'CSVのデータを読み込みました。');
+            return response()->json($csv_user);
         }
         return redirect('/csv/practice2')->with('flashmessage', 'CSVの送信エラーが発生しましたので、送信を中止しました。');
     }
