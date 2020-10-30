@@ -147,6 +147,36 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'company_name' => '事業者名',
+        'company_name_kana' => '事業者名(カナ)',
+        'company_name_en' => '事業者名(英語)',
+        'company_manager_user_id' => '事業者管理者ID',
+        'dex_res_id' => 'DEXリソースID',
+        'dex_login_user_id' => 'DEXユーザーID',
+        'dex_login_password_id' => 'DEXパスワード',
+        'zip_code' => '郵便番号',
+        'address_1' => '住所1(市区町村番地)',
+        'address_2' => '住所2(マンション・ビル等)',
+        'manager_user_id' => '管理者ID',
+        'tel_no' => '代表電話番号',
+        'fax_no' => '代表FAX番号',
+        'mailaddress' => 'メールアドレス',
+        'url' => 'URL',
+        'company_id' => '事業者ID',
+        'broadcaster_id' => '局ID',
+
+        // テーブル共通項目
+        'del_flag' => '削除フラグ',
+        'created_by' => '作成ユーザーID',
+        'created_at' => '作成日時',
+        'create_function_id' => '作成機能ID',
+        'updated_by' => '更新ユーザーID',
+        'updated_at' => '更新日時',
+        'update_function_id' => '更新機能ID',
+
+        'batch_update_datetime' => 'バッチ更新日時',
+        'batch_update_function_id' => 'バッチ更新機能ID',
+    ],
 
 ];

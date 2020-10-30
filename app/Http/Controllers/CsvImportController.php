@@ -206,8 +206,8 @@ class CsvImportController extends Controller
         /*事業者用*/
         $validator = Validator::make($user, [
             'company_name' => 'string',
-            'company_name_kana' => 'string',
-            'company_name_en' => 'string',
+            'company_name_kana' => 'integer',
+            'company_name_en' => 'integer',
             'company_manager_user_id' => 'integer',
             'dex_res_id' => 'string',
             'dex_login_user_id' => 'string',
