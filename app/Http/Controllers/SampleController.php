@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 class SampleController extends Controller
 {
     public function index() {
-        return view('sample/index', ['msg'=>'フォームを入力：']);
+        return view('sample/index');
     }
 
     public  function store(Request $request) {
