@@ -34,6 +34,15 @@ https://remotestance.com/blog/2701/--}}
         <button type="submit">送信</button>
     </div>
 </form>
+
+<p class="messageBar" style="margin-top: 20px; border: 1px solid transparent; padding: 0.3em;">
+    下のボタンを押してください。
+</p>
+<div>
+    <button id="warn">警告</button>
+    <button id="error">エラー</button>
+</div>
+
 </body>
 
 <script>
@@ -93,3 +102,5 @@ https://remotestance.com/blog/2701/--}}
     });
 </script>
 </html>
+
+
