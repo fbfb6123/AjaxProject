@@ -10,7 +10,7 @@ class SampleController extends Controller
         return view('sample/index');
     }
 
-    public  function store(Request $request) {
+    public  function inquiry(Request $request) {
         $validate_rule = [
             'name' => 'required',
             'mail' => 'email',

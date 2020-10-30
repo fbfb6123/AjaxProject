@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SampleController;
 use App\Http\Controllers\CsvImportController;
 
 /*
@@ -22,3 +23,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::namespace('csv')->group(function () {
 Route::match(['get', 'post'], '/csv/upload_regist', [CsvImportController::class, 'upload_regist']); //登録
 });
+
+//Ajax非同期バリデーション
+Route::match(['get', 'post'], '/sample/inquiry', [SampleController::class, 'inquiry']); //登録
+
