@@ -74,6 +74,11 @@
         <button style="margin-top: 10px;" onclick="upload(); return false;">送信</button>
     </form>
 
+<a href="" class="btn btn--orange btn--radius">ファイルを選択</a>
+
+<a href="" class="btn btn--orange btn--radius">アップロード</a>
+
+
     <html>
     <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"integrity="sha384-I6F5OKECLVtK/BL+8iSLDEHowSAfUo76ZL9+kGAgTRdiByINKJaqTPH/QVNS1VDb" crossorigin="anonymous"></script>
