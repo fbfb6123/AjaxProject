@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fb75ec24-a982-4e24-b26a-70d7d2da719c" name="デフォルト変更リスト" comment="">
-      <change beforePath="$PROJECT_DIR$/resources/views/sample/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/sample/index.blade.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/resources/css/app.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/form.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/form.blade.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -173,7 +176,9 @@
       <updated>1603427308535</updated>
       <workItem from="1603427309722" duration="14661000" />
       <workItem from="1603685363569" duration="9869000" />
-      <workItem from="1603757592473" duration="21386000" />
+      <workItem from="1603757592473" duration="23340000" />
+      <workItem from="1604451202851" duration="5000" />
+      <workItem from="1604621757892" duration="1109000" />
     </task>
     <servers />
   </component>
@@ -192,9 +197,9 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="559" y="135" key="NewPhpClassDialog/0.0.1536.824@0.0.1536.824" timestamp="1603441191638" />
-    <state x="437" y="145" width="662" height="534" key="find.popup" timestamp="1604033247404">
+    <state x="437" y="145" width="662" height="534" key="find.popup" timestamp="1604622293411">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="437" y="145" width="662" height="534" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1604033247404" />
+    <state x="437" y="145" width="662" height="534" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1604622293411" />
   </component>
 </project>

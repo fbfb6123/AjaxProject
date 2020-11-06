@@ -1,4 +1,8 @@
 
+
+<link rel="stylesheet" type="text/css" href="css/app.css">
+
+
     <h1>Laravel で CSV インポート 演習</h1>
     <p>CSVファイルを csv_users テーブルに登録します。</p>
 

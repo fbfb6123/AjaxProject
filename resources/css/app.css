@@ -21,3 +21,7 @@ form {
     font-size: 20px;
     cursor: pointer;
 }
+
+.col-1 {
+    background-color: #2d3748;
+}
