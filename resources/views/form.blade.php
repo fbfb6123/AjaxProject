@@ -71,10 +71,11 @@
                 </div>
             </div>
         </div>
-        <button style="margin-top: 10px;" onclick="upload(); return false;">送信</button>
+        <a href="" class="btn btn--orange btn--radius"　onclick="upload(); return false;">ファイルを選択</a>
+        <button class="btn btn--orange btn--radius" onclick="upload(); return false;">アップロード</button>
     </form>
 
-<a href="" class="btn btn--orange btn--radius">ファイルを選択</a>
+<a href="" class="btn btn--orange btn--radius"　onclick="upload(); return false;">ファイルを選択</a>
 
 <a href="" class="btn btn--orange btn--radius">アップロード</a>
 
