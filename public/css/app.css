@@ -64,12 +64,79 @@ custom-file {
     border-radius: 0.5rem;
     border-width: medium;
     border: none;
-    display:none;
     background-color: #2d3748;
 }
 
-custom-file {
-    display:none;
+
+.file {
+    display: inline-block;
+    overflow: hidden;
+    position: relative;
+    padding: 1em;
+    border: 1px solid #dd0000;
+    background: #dd0000;
+    color:#fff;
+}
+
+.file input[type="file"] {
+    opacity: 0;
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 0;
+    font-size: 100px;
+}
+
+input[type="file"] {
+    display: none;
+}
+label {
+    background: #ddd;
+    padding: 10px 30px;
+    border-radius: 10px;
+    display: inline-block;
+    position: relative;
+}
+label::after {
+    content: "選択されていません";
+    font-size: 14px;
+    height: 20px;
+    line-height: 20px;
+    position: absolute;
+    right: -140px;
+    top: calc(50% - 10px);
+}
+label.changed::after {
+    content: "";
+}
+.filename {
+    font-size: 12px;
 }
 
 
+/*
+//14:15*/
+
+input[type="file"] {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+}
+
+label {
+    padding: 10px 25px;
+    margin: 0 0 10px;
+    background: #aaa;
+    color: #fff;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.fileclear {
+    display: none;
+    margin: 10px 0 0;
+    text-decoration: underline;
+    font-weight: bold;
+    cursor: pointer;
+}

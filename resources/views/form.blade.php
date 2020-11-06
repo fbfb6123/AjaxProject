@@ -64,16 +64,25 @@
         {{ csrf_field() }}
         <div class="row">
             <label class="col-1 text-right" for="form-file-1">File:</label>
-            <div class="col-11">
+            <div class="file">
+                ファイルを選択
+                <input type="file" id="csv" name="file_data">
+            </div>
+
+            <div>
+                <input type="file" id="image" name="file_data" style='width: 500px'/>
+            </div>
+            {{--<div class="col-11">
                 <div class="custom-file">
-                    <input type="file" id="csv" name="file_data" class="custom-file-input">
+                    <input type="file" id="csv" name="file_data" class="btn btn--orange btn--radius">
                     <label class="custom-file-label" for="customFile" data-browse="参照">ファイル選択...</label>
                 </div>
-            </div>
+            </div>--}}
         </div>
         <a href="" class="btn btn--orange btn--radius"　onclick="upload(); return false;">ファイルを選択</a>
         <button class="btn btn--orange btn--radius" onclick="upload(); return false;">アップロード</button>
     </form>
+
 
 
     <html>
@@ -83,7 +92,7 @@
     <script>
 
         // ファイルを選択すると、コントロール部分にファイル名を表示
-        $('.custom-file-input').on('change',function(){
+        $('.file').on('change',function(){
             $(this).next('.custom-file-label').html($(this)[0].files[0].name);
         })
     </script>
