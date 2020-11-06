@@ -66,30 +66,28 @@ custom-file {
     border: none;
 }
 
-
-.file {
-    display: inline-block;
-    overflow: hidden;
-    position: relative;
-    padding: 1em;
-    border: 1px solid #dd0000;
-    background: #dd0000;
-    color:#fff;
-}
-
-
-
 input[type="file"] {
     display: none;
 }
 label {
-    background: #ddd;
-    padding: 10px 30px;
-    border-radius: 10px;
+    background: #228b22;
+    border-radius: 100vh;
     display: inline-block;
     position: relative;
-}
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: 1.5;
+    padding: 1rem 4rem;
+    cursor: pointer;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    text-align: center;
+    vertical-align: middle;
+    text-decoration: none;
+    letter-spacing: 0.1em;
 
+}
 
 /*
 //14:15*/

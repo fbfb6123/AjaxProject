@@ -61,7 +61,7 @@
         <div class="row">
             <div class="col-11">
                 <div class="custom-file">
-                    <label><input type="file" id="csv" name="file_data" class="custom-file-input">ファイルを選択してください</label>
+                    <label><input type="file" id="csv" name="file_data" class="custom-file-input">ファイルを選択</label>
                     <p>選択されていません</p>
                 </div>
             </div>
