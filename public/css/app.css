@@ -64,7 +64,6 @@ custom-file {
     border-radius: 0.5rem;
     border-width: medium;
     border: none;
-    background-color: #2d3748;
 }
 
 
@@ -78,17 +77,10 @@ custom-file {
     color:#fff;
 }
 
-.file input[type="file"] {
-    opacity: 0;
-    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
-    position: absolute;
-    right: 0;
-    top: 0;
-    margin: 0;
-    font-size: 100px;
-}
+
 
 input[type="file"] {
+    display: none;
 }
 label {
     background: #ddd;

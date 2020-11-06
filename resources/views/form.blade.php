@@ -1,6 +1,5 @@
 
     <h1>Laravel で CSV インポート 演習</h1>
-    <p>CSVファイルを csv_users テーブルに登録します。</p>
 
     <link rel="stylesheet" type="text/css" href="css/app.css">
 
@@ -62,8 +61,8 @@
         <div class="row">
             <div class="col-11">
                 <div class="custom-file">
-                    <input type="file" id="csv" name="file_data" class="custom-file-input">
-                    <label class="custom-file-label" for="customFile" data-browse="参照">ファイル選択...</label>
+                    <label><input type="file" id="csv" name="file_data" class="custom-file-input">ファイルを選択してください</label>
+                    <p>選択されていません</p>
                 </div>
             </div>
         </div>
@@ -80,6 +79,11 @@
         $('.custom-file-input').on('change',function(){
             $(this).next('.custom-file-label').html($(this)[0].files[0].name);
         })
+
+        $('input').on('change', function () {
+            var file = $(this).prop('files')[0];
+            $('p').text(file.name);
+        });
     </script>
     </body>
     </html>
