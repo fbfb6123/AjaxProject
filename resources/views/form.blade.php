@@ -75,10 +75,6 @@
         <button class="btn btn--orange btn--radius" onclick="upload(); return false;">アップロード</button>
     </form>
 
-<a href="" class="btn btn--orange btn--radius"　onclick="upload(); return false;">ファイルを選択</a>
-
-<a href="" class="btn btn--orange btn--radius">アップロード</a>
-
 
     <html>
     <body>
