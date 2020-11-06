@@ -1,11 +1,8 @@
 
-
-<link rel="stylesheet" type="text/css" href="css/app.css">
-
-
     <h1>Laravel で CSV インポート 演習</h1>
     <p>CSVファイルを csv_users テーブルに登録します。</p>
 
+    <link rel="stylesheet" type="text/css" href="css/app.css">
 
 
     <script type="text/javascript">
@@ -63,27 +60,15 @@
     <form action="" method="post" enctype="multipart/form-data" id="imgForm">
         {{ csrf_field() }}
         <div class="row">
-            <label class="col-1 text-right" for="form-file-1">File:</label>
-            <div class="file">
-                ファイルを選択
-                <input type="file" id="csv" name="file_data">
-            </div>
-
-            <div>
-                <input type="file" id="image" name="file_data" style='width: 500px'/>
-            </div>
-            {{--<div class="col-11">
+            <div class="col-11">
                 <div class="custom-file">
-                    <input type="file" id="csv" name="file_data" class="btn btn--orange btn--radius">
+                    <input type="file" id="csv" name="file_data" class="custom-file-input">
                     <label class="custom-file-label" for="customFile" data-browse="参照">ファイル選択...</label>
                 </div>
-            </div>--}}
+            </div>
         </div>
-        <a href="" class="btn btn--orange btn--radius"　onclick="upload(); return false;">ファイルを選択</a>
         <button class="btn btn--orange btn--radius" onclick="upload(); return false;">アップロード</button>
     </form>
-
-
 
     <html>
     <body>
@@ -92,7 +77,7 @@
     <script>
 
         // ファイルを選択すると、コントロール部分にファイル名を表示
-        $('.file').on('change',function(){
+        $('.custom-file-input').on('change',function(){
             $(this).next('.custom-file-label').html($(this)[0].files[0].name);
         })
     </script>

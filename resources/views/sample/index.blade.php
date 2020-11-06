@@ -10,7 +10,6 @@
 <div class="js-upload-filename">ファイルが未選択です</div>
 <div class="fileclear js-upload-fileclear">選択ファイルをクリア</div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
     $(function() {
         $('.js-upload-file').on('change', function () { //ファイルが選択されたら
@@ -19,3 +18,19 @@
         });
     });
 </script>
+
+
+
+{{--試作用品--}}
+<div>
+    <input type="file" id="csv" name="file_data" style='width: 500px'/>
+</div>
+
+<label>
+    <input type="file" id="csv" name="file_data" class="js-upload-file">ファイルを選択
+</label>
+<div class="js-upload-filename">ファイルが未選択です</div>
+<div class="fileclear js-upload-fileclear">選択ファイルをクリア</div>
+
+{{--アップロードボタン--}}
+<button class="btn btn--orange btn--radius" onclick="upload(); return false;">アップロード</button>

@@ -89,7 +89,6 @@ custom-file {
 }
 
 input[type="file"] {
-    display: none;
 }
 label {
     background: #ddd;
@@ -98,45 +97,9 @@ label {
     display: inline-block;
     position: relative;
 }
-label::after {
-    content: "選択されていません";
-    font-size: 14px;
-    height: 20px;
-    line-height: 20px;
-    position: absolute;
-    right: -140px;
-    top: calc(50% - 10px);
-}
-label.changed::after {
-    content: "";
-}
-.filename {
-    font-size: 12px;
-}
 
 
 /*
 //14:15*/
 
-input[type="file"] {
-    opacity: 0;
-    visibility: hidden;
-    position: absolute;
-}
 
-label {
-    padding: 10px 25px;
-    margin: 0 0 10px;
-    background: #aaa;
-    color: #fff;
-    display: inline-block;
-    cursor: pointer;
-}
-
-.fileclear {
-    display: none;
-    margin: 10px 0 0;
-    text-decoration: underline;
-    font-weight: bold;
-    cursor: pointer;
-}
