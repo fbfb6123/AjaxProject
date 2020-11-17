@@ -21,7 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::namespace('csv')->group(function () {
-Route::match(['get', 'post'], '/csv/upload_regist', [CsvImportController::class, 'upload_regist']); //登録
+Route::match(['get', 'post'], '/csv/apiCsvUpload', [CsvImportController::class, 'apiCsvUpload']); //登録
 });
 
 //Ajax非同期バリデーション

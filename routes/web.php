@@ -35,5 +35,5 @@ Route::resource('/sample',SampleController::class);
 
 //CSV
 Route::namespace('csv')->group(function () {
-Route::get('/form',  [CsvImportController::class, 'practice2']);
+Route::get('/form',  [CsvImportController::class, 'index']);
 });
