@@ -15,6 +15,7 @@
 
 
 
+<!-- //ファイル選択時のプレビューメソッド -->
 <script>
     $('input').on('change', function () {
         var file = $(this).prop('files')[0];
