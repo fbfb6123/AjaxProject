@@ -79,14 +79,14 @@ class CsvImportController extends Controller
             // TMPファイル削除
             unlink($tmppath);
 
-            /*$valid = new CompanyValidate();*/
+            $valid = new CompanyValidate();
 
             // 処理
             foreach ($datalist as $row) {
                 // 各データ取り出し
                 $csv_company = $this->getCsvUser($row);
 
-                $this->registUserCsv($csv_company, new CompanyValidate()); //, new CompanyValidate()追記
+                $this->registUserCsv($csv_company, $valid->rules()/*, new CompanyValidate()*/); //, new CompanyValidate()追記
             }
             return response()->json($csv_company);
         }
@@ -128,7 +128,7 @@ class CsvImportController extends Controller
         return $company;
     }
 
-    /*private function registUserCsv(array $company,array $rules)
+    private function registUserCsv(array $company,array $rules)
     {
         //放送局用
         if ($validator = Validator::make($company, $rules)->validate()) {
@@ -140,7 +140,7 @@ class CsvImportController extends Controller
 
             $newcompany->save();
         }
-    }*/
+    }
 
     /**
      * insert()
@@ -155,7 +155,7 @@ class CsvImportController extends Controller
      *
      * @return array|null $errors エラー一覧
      */
-    public function registUserCsv(array $company, $valid, $flag=false)
+    /*public function registUserCsv(array $company, $valid, $flag=false)
     {
         // モデル登録用の連想配列
         $params = [];
@@ -208,6 +208,6 @@ class CsvImportController extends Controller
         }
 
         return $errors;
-    }
+    }*/
 }
 
