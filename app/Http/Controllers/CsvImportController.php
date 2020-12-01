@@ -7,7 +7,7 @@ use Goodby\CSV\Import\Standard\Lexer;
 use Goodby\CSV\Import\Standard\LexerConfig;
 use Illuminate\Http\Request;
 use App\Models\Company;
-/*use App\Requests\CompanyValidate;*/
+use App\Http\Requests\CompanyValidate;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
@@ -80,14 +80,14 @@ class CsvImportController extends Controller
             // TMPファイル削除
             unlink($tmppath);
 
-            /*$valid = new CompanyValidate();*/
+            $valid = new CompanyValidate();
 
             // 処理
             foreach ($datalist as $row) {
                 // 各データ取り出し
                 $csv_company = $this->getCsvUser($row);
 
-                $this->registUserCsv($csv_company);
+                $this->registUserCsv($csv_company, $valid->rules());
             }
             return response()->json($csv_company);
         }
@@ -128,11 +128,11 @@ class CsvImportController extends Controller
         return $company;
     }
 
-    private function registUserCsv(array $company)
+    private function registUserCsv(array $company,array $rules)
     {
         //放送局用
-        /*if ($validator = Validator::make($company, $rules)->validate()) {
-            Log::debug($company);*/
+        if ($validator = Validator::make($company, $rules)->validate()) {
+            Log::debug($company);
             $newcompany = new Company;
             foreach ($company as $key => $value) {
                 $newcompany->$key = $value;
@@ -140,6 +140,6 @@ class CsvImportController extends Controller
 
             $newcompany->save();
         }
-    /*}*/
+    }
 }
 
