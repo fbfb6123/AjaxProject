@@ -28,6 +28,8 @@ use Illuminate\Support\Facades\Validator;
 class CsvImportController extends Controller
 {
 
+
+
     public function index()
     {
         return view('/form');
@@ -43,11 +45,7 @@ class CsvImportController extends Controller
     }
 
 
-    /**
-     * @return
-     * @author  koutaro_ikeda <koutaro_ikeda@s-cubed.co.jp>
-     * CSVファイルAjaxインポート
-     */
+
     public function apiCsvUpload(Request $request)
     {
         if ($request->hasFile('csv') && $request->file('csv')->isValid()) {
@@ -60,6 +58,7 @@ class CsvImportController extends Controller
             $config_in = new LexerConfig();
             $config_in
                 ->setFromCharset("SJIS-win")
+                /*->setToCharset("UTF-8") // CharasetをUTF-8に変換*/
                 ->setIgnoreHeaderLine(true) //CSVのヘッダーを無視
             ;
             $lexer_in = new Lexer($config_in);
@@ -80,14 +79,14 @@ class CsvImportController extends Controller
             // TMPファイル削除
             unlink($tmppath);
 
-            $valid = new CompanyValidate();
+            /*$valid = new CompanyValidate();*/
 
             // 処理
             foreach ($datalist as $row) {
                 // 各データ取り出し
                 $csv_company = $this->getCsvUser($row);
 
-                $this->registUserCsv($csv_company, $valid->rules());
+                $this->registUserCsv($csv_company, new CompanyValidate()); //, new CompanyValidate()追記
             }
             return response()->json($csv_company);
         }
@@ -100,6 +99,7 @@ class CsvImportController extends Controller
         $company = [
 
             //Company用の配列作成
+            //$company[company_name] = $row[0]と同じ
             'company_name' => $row[0],
             'company_name_kana' => $row[1],
             'company_name_en' => $row[2],
@@ -128,7 +128,7 @@ class CsvImportController extends Controller
         return $company;
     }
 
-    private function registUserCsv(array $company,array $rules)
+    /*private function registUserCsv(array $company,array $rules)
     {
         //放送局用
         if ($validator = Validator::make($company, $rules)->validate()) {
@@ -140,6 +140,74 @@ class CsvImportController extends Controller
 
             $newcompany->save();
         }
+    }*/
+
+    /**
+     * insert()
+     *
+     * 指定されたモデルの連続登録処理
+     *
+     * @param array $keys
+     * @param array $values
+     * @param mixed $obj 登録対象モデル
+     * @param mixed $valid 登録対象バリデータ
+     * @param boolean $flag エラーの出力制御フラグ
+     *
+     * @return array|null $errors エラー一覧
+     */
+    public function registUserCsv(array $company, $valid, $flag=false)
+    {
+        // モデル登録用の連想配列
+        $params = [];
+
+        // エラー配列の初期化
+        $errors = [];
+
+        $keys = [];
+        $keys =array_keys($company);
+        Log::debug($keys);
+
+        $values = [];
+        $values =array_values($company);
+        Log::debug($values);
+
+        $obj = new Company;
+
+        // データの登録処理
+        foreach ($values as $line => $val) {
+            // エラー文字列の初期化
+            $error = '';
+
+            // バリデーション用の連想配列を作成
+            foreach ($keys as $idx => $key) {
+                $params[$key] = $val[$idx] ?? null;
+            }
+
+            // バリデートの実行
+            $validator = $valid->localValidate($params);
+
+            // バリデーションにエラーが発生した場合はエラー配列に内容を書込み
+            if ($validator->fails()) {
+                $error .= "\n" . $line . "行目のデータにエラーがあります\n";
+                foreach ($validator->errors()->all() as $error) {
+                    $error .= "・" . $error . "\n";
+                }
+                $errors[] = $error;
+            } else {
+                // 新規登録
+                $obj->create($params);
+            }
+        }
+
+        // エラーがある場合は出力
+        if (is_countable($errors) && count($errors) > 0 && $flag) {
+            foreach ($errors as $error) {
+                echo $error;
+            }
+            echo "\n";
+        }
+
+        return $errors;
     }
 }
 
