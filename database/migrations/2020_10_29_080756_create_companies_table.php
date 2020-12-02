@@ -19,7 +19,7 @@ class CreateCompaniesTable extends Migration
                 ->comment('事業者ID');
 
             // 事業者名
-            $table->string('company_name',30)
+            $table->string('company_name', 30)
                 ->nullable()
                 ->comment('事業者名');
 
@@ -29,22 +29,22 @@ class CreateCompaniesTable extends Migration
                 ->comment('事業者名(カナ)');
 
             // 事業者名(英語)
-            $table->string('company_name_en',50)
+            $table->string('company_name_en', 50)
                 ->nullable()
                 ->comment('事業者名(英語)');
 
             // 事業者管理者ID
-            $table->bigInteger('company_manager_user_id', false, true)
+            $table->unsignedBigInteger('company_manager_user_id')
                 ->nullable()
                 ->comment('事業者管理者ID');
 
             // DEXリソースID
-            $table->string('dex_res_id',9)
+            $table->string('dex_res_id', 9)
                 ->nullable()
                 ->comment('DEXリソースID');
 
             // DEXユーザーID
-            $table->string('dex_login_user_id',50)
+            $table->string('dex_login_user_id', 50)
                 ->nullable()
                 ->comment('DEXユーザーID');
 
@@ -54,9 +54,17 @@ class CreateCompaniesTable extends Migration
                 ->comment('DEXパスワード');
 
             // 郵便番号
-            $table->string('zip_code',10)
+            $table->string('zip_code', 10)
                 ->nullable()
                 ->comment('郵便番号');
+
+            // 都道府県ID
+            /*$table->unsignedBigInteger('prefecture_id')
+                ->nullable()
+                ->comment('都道府県ID');
+            // 外部キーを設定する
+            $table->foreign('prefecture_id')
+                ->references('id')->on('prefectures');*/
 
             // 住所1(市区町村番地)
             $table->string('address_1', 100)
@@ -69,7 +77,7 @@ class CreateCompaniesTable extends Migration
                 ->comment('住所2(マンション・ビル等)');
 
             // 管理者ID
-            $table->bigInteger('manager_user_id', false, true)
+            $table->unsignedBigInteger('manager_user_id')
                 ->nullable()
                 ->comment('管理者ID');
 
@@ -84,7 +92,7 @@ class CreateCompaniesTable extends Migration
                 ->comment('代表FAX番号');
 
             // メールアドレス
-            $table->string('mailaddress', 100)
+            $table->string('email', 100)
                 ->nullable()
                 ->comment('メールアドレス');
 
@@ -94,11 +102,13 @@ class CreateCompaniesTable extends Migration
                 ->comment('URL');
 
             // 削除フラグ
-            $table->char('del_flag', 1)
+            $table->char('del_flg', 1)
+                ->default('0')
                 ->comment('削除フラグ');
 
             // 作成ユーザーID
-            $table->biginteger('created_by', false, true)
+            $table->unsignedBigInteger('created_by')
+                ->nullable()
                 ->comment('作成ユーザーID');
 
             // 作成日時
@@ -106,11 +116,12 @@ class CreateCompaniesTable extends Migration
                 ->comment('作成日時');
 
             //作成機能ID
-            $table->string('create_function_id',5)
+            $table->string('create_function_id', 5)
+                ->nullable()
                 ->comment('作成機能ID');
 
             // 更新ユーザーID
-            $table->bigInteger('updated_by', false, true)
+            $table->unsignedBigInteger('updated_by')
                 ->nullable()
                 ->comment('更新ユーザーID');
 
@@ -120,10 +131,9 @@ class CreateCompaniesTable extends Migration
                 ->comment('更新日時');
 
             // 更新機能ID
-            $table->string('update_function_id',5)
+            $table->string('update_function_id', 5)
                 ->nullable()
                 ->comment('更新機能ID');
-
         });
 
         // テーブルにコメントを設定
