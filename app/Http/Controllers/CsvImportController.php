@@ -58,7 +58,7 @@ class CsvImportController extends Controller
             $config_in = new LexerConfig();
             $config_in
                 ->setFromCharset("SJIS-win")
-                /*->setToCharset("UTF-8") // CharasetをUTF-8に変換*/
+                ->setToCharset("UTF-8") // CharasetをUTF-8に変換
                 ->setIgnoreHeaderLine(true) //CSVのヘッダーを無視
             ;
             $lexer_in = new Lexer($config_in);
@@ -79,14 +79,14 @@ class CsvImportController extends Controller
             // TMPファイル削除
             unlink($tmppath);
 
-            $valid = new CompanyValidate();
+            /*$valid = new CompanyValidate();*/
 
             // 処理
             foreach ($datalist as $row) {
                 // 各データ取り出し
                 $csv_company = $this->getCsvUser($row);
 
-                $this->registUserCsv($csv_company, $valid->rules()/*, new CompanyValidate()*/); //, new CompanyValidate()追記
+                $this->registUserCsv($csv_company/* ,$valid->rules()*/, new CompanyValidate()); //, new CompanyValidate()追記
             }
             return response()->json($csv_company);
         }
@@ -113,22 +113,22 @@ class CsvImportController extends Controller
             'manager_user_id' => $row[10],
             'tel_no' => $row[11],
             'fax_no' => $row[12],
-            'mailaddress' => $row[13],
+            'email' => $row[13],
             'url' => $row[14],
-            'del_flag' => $row[15],
-            'created_by' => $row[16],
-            'created_at' => $row[17],
-            'create_function_id' => $row[18],
-            'updated_by' => $row[19],
-            'updated_at' => $row[20],
-            'update_function_id' => $row[21],
+            /*'del_flg' => $row[15],*/
+            'created_by' => $row[15],
+            /*'created_at' => $row[17],*/
+            'create_function_id' => $row[16],
+            'updated_by' => $row[17],
+            /*'updated_at' => $row[20],*/
+            'update_function_id' => $row[18],
 
         ];
 
         return $company;
     }
 
-    private function registUserCsv(array $company,array $rules)
+    /*private function registUserCsv(array $company,array $rules)
     {
         //放送局用
         if ($validator = Validator::make($company, $rules)->validate()) {
@@ -140,7 +140,7 @@ class CsvImportController extends Controller
 
             $newcompany->save();
         }
-    }
+    }*/
 
     /**
      * insert()
@@ -155,7 +155,7 @@ class CsvImportController extends Controller
      *
      * @return array|null $errors エラー一覧
      */
-    /*public function registUserCsv(array $company, $valid, $flag=false)
+    public function registUserCsv(array $company, $valid, $flag=false)
     {
         // モデル登録用の連想配列
         $params = [];
@@ -163,15 +163,13 @@ class CsvImportController extends Controller
         // エラー配列の初期化
         $errors = [];
 
-        $keys = [];
         $keys =array_keys($company);
         Log::debug($keys);
 
-        $values = [];
         $values =array_values($company);
         Log::debug($values);
 
-        $obj = new Company;
+        $newcompany = new Company;
 
         // データの登録処理
         foreach ($values as $line => $val) {
@@ -195,7 +193,12 @@ class CsvImportController extends Controller
                 $errors[] = $error;
             } else {
                 // 新規登録
-                $obj->create($params);
+
+                foreach ($company as $key => $value) {
+                    $newcompany->$key = $value;
+                }
+                Log::info($newcompany);
+                $newcompany->save();
             }
         }
 
@@ -208,6 +211,6 @@ class CsvImportController extends Controller
         }
 
         return $errors;
-    }*/
+    }
 }
 

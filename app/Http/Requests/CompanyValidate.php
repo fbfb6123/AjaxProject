@@ -6,6 +6,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Validator as LocalValidator;
 use Illuminate\Validation\ValidationException;
 
 class CompanyValidate extends FormRequest
@@ -14,9 +15,9 @@ class CompanyValidate extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'nullable|Integer',//事業者名
-            'kana' => 'nullable|max:30',//事業者名(カナ)
-            'en' => 'nullable|max:30',//事業者名（英語）
+            'company_name' => 'nullable|',//事業者名
+            'company_name_kana' => 'nullable|max:30',//事業者名(カナ)
+            'company_name_en' => 'nullable|max:30',//事業者名（英語）
             'company_manager_user_id' => 'nullable|max:10',//事業者管理者ID
             'dex_res_id' => 'nullable|max:9',//DEXリソースID
             'dex_login_user_id' => 'nullable|max:50',//DEXユーザーID
@@ -25,12 +26,12 @@ class CompanyValidate extends FormRequest
             'prefecture_id' => 'nullable|max:5',//都道府県ID
             'address_1' => 'nullable|max:100',//住所1(市区町村番地)
             'address_2' => 'nullable|max:100',//住所2(マンション・ビル等)
-            'manager_user_id' => 'nullable|max:10',//管理者ID
+            /*'manager_user_id' => 'nullable|max:10',//管理者ID*/
             'tel_no' => 'nullable|max:20',//代表電話番号
             'fax_no' => 'nullable|max:20',//代表FAX番号
-            'mailaddress' => 'nullable|max:100|email',//メールアドレス
+            'email' => 'nullable|max:100|email',//メールアドレス
             'url' => 'nullable|max:100',//URL
-            'del_flag' => 'nullable|Integer',//削除フラグ
+            /*'del_flg' => 'nullable|Integer',//削除フラグ*/
         ];
     }
 
@@ -80,6 +81,20 @@ class CompanyValidate extends FormRequest
         else {
             parent::failedValidation($validator);
         }
+    }
+
+    /**
+     * localValidate()
+     *
+     * フォーム以外の入力をバリデートする
+     *
+     * @param array $params
+     * @return mixed
+     * @throws ValidationException
+     */
+    public function localValidate(array $params)
+    {
+        return LocalValidator::make($params, $this->rules());
     }
 
 }
