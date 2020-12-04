@@ -180,6 +180,7 @@ class CsvImportController extends Controller
             foreach ($keys as $idx => $key) {
                 $params[$key] = $val[$idx] ?? null;
             }
+            Log::info($params);
 
             // バリデートの実行
             $validator = $valid->localValidate($params);
@@ -197,7 +198,7 @@ class CsvImportController extends Controller
                 foreach ($company as $key => $value) {
                     $newcompany->$key = $value;
                 }
-                Log::info($newcompany);
+                /*Log::info($newcompany);*/
                 $newcompany->save();
             }
         }
@@ -212,5 +213,88 @@ class CsvImportController extends Controller
 
         return $errors;
     }
+
+
+
+    /**
+     * insert()
+     *保存動作確認済み
+     */
+    /*public function registUserCsv(array $row, $valid, $flag=false)
+    {
+
+
+
+        $keys = [
+            "company_name",
+            "company_name_kana",
+            "company_name_en",
+            "company_manager_user_id",
+            "dex_res_id",
+            "dex_login_user_id",
+            "dex_login_password_id",
+            "zip_code",
+            "address_1",
+            "address_2",
+            "manager_user_id",
+            "tel_no",
+            "fax_no",
+            "email",
+            "url",
+        ];
+
+        $values = [$row];
+
+
+
+        // モデル登録用の連想配列
+        $params = [];
+
+        // エラー配列の初期化
+        $errors = $row;
+
+        /*$values = $row;
+        Log::info($values);*/
+
+        /*$company = new Company();
+
+        // データの登録処理
+        foreach ($values as $line => $val) {
+            // エラー文字列の初期化
+            $error = '';
+
+            // バリデーション用の連想配列を作成
+            foreach ($keys as $idx => $key) {
+                $params[$key] = $val[$idx] ?? null;
+            }
+            Log::info($params);
+
+
+            // バリデートの実行
+            $validator = $valid->localValidate($params);
+
+            // バリデーションにエラーが発生した場合はエラー配列に内容を書込み
+            if ($validator->fails()) {
+                $error .= "\n" . $line . "行目のデータにエラーがあります\n";
+                foreach ($validator->errors()->all() as $error) {
+                    $error .= "・" . $error . "\n";
+                }
+                $errors[] = $error;
+            } else {
+                // 新規登録
+                $company->create($params);
+            }
+        }*/
+
+        // エラーがある場合は出力
+        /*if (is_countable($errors) && count($errors) > 0 && $flag) {
+            foreach ($errors as $error) {
+                echo $error;
+            }
+            echo "\n";
+        }
+
+        return $errors;
+    }*/
 }
 
