@@ -113,11 +113,26 @@ return [
 
     'attributes' => [
     // 共通項目
-        'company_id' => '事業者ID',
-        'broadcaster_id' => '局ID',
+        'company' => '事業者',
+        'company_name' => '事業者名',
+        'compamy_kana' => '事業者名(カナ)',
+        'compamy_en' => '事業者名（英語）',
+        'company_manager_user_id' => '事業者管理者ID',
+        'dex_res_id' => 'DEXリソースID',
+        'dex_login_user_id'=>'DEXユーザーID',
+        'dex_login_password_id' => 'DEXパスワード',
+        'zip_code' => '郵便番号',
+        'prefecture_id' => '都道府県ID',
+        'kana' => '会社名カナ',
+        'address_1' => '住所1(市区町村番地)',
+        'address_2' => '住所2(マンション・ビル等)',
+        'manager_user_id' => '管理者ID',
+        'tel_no' => '代表電話番号',
+        'fax_no' => '代表FAX番号',
+        'email' => 'メールアドレス',
+        'url' => 'URL',
 
-    // テーブル共通項目
-        'del_flag' => '削除フラグ',
+        'del_flg' => '削除フラグ',
         'created_by' => '作成ユーザーID',
         'created_at' => '作成日時',
         'create_function_id' => '作成機能ID',
@@ -127,18 +142,6 @@ return [
 
         'batch_update_datetime' => 'バッチ更新日時',
         'batch_update_function_id' => 'バッチ更新機能ID',
-
-
-        'id' => 'ID',
-        'email' => 'メールアドレス',
-        'user_name' => 'ユーザー名',
-        'user_kbn' => 'ユーザー区分',
-        'system_manager_flg' => 'システム管理者フラグ',
-        'valid_flg' => '有効フラグ',
-        'password' => 'パスワード',
-        'password_unmatch_init_datetime' => 'パスワード不一致初回日時',
-        'password_unmatch_count' => 'パスワード不一致回数',
-        'account_lock_datetime' => 'アカウントロック日時',
 
     ],
 ];
