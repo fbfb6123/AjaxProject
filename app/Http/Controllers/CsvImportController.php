@@ -7,7 +7,7 @@ use Goodby\CSV\Import\Standard\Lexer;
 use Goodby\CSV\Import\Standard\LexerConfig;
 use Illuminate\Http\Request;
 use App\Models\Company;
-use App\Http\Requests\CompanyValidate;
+use App\Requests\CompanyValidate;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
@@ -46,6 +46,9 @@ class CsvImportController extends Controller
 
 
 
+    /**
+     * CSVファイルAjaxインポート
+     */
     public function apiCsvUpload(Request $request)
     {
         if ($request->hasFile('csv') && $request->file('csv')->isValid()) {
@@ -58,7 +61,6 @@ class CsvImportController extends Controller
             $config_in = new LexerConfig();
             $config_in
                 ->setFromCharset("SJIS-win")
-                ->setToCharset("UTF-8") // CharasetをUTF-8に変換
                 ->setIgnoreHeaderLine(true) //CSVのヘッダーを無視
             ;
             $lexer_in = new Lexer($config_in);
@@ -79,14 +81,14 @@ class CsvImportController extends Controller
             // TMPファイル削除
             unlink($tmppath);
 
-            /*$valid = new CompanyValidate();*/
+            $valid = new CompanyValidate();
 
             // 処理
             foreach ($datalist as $row) {
                 // 各データ取り出し
                 $csv_company = $this->getCsvUser($row);
 
-                $this->registUserCsv($csv_company/* ,$valid->rules()*/, new CompanyValidate()); //, new CompanyValidate()追記
+                $this->registUserCsv($csv_company, $valid->rules());
             }
             return response()->json($csv_company);
         }
@@ -96,10 +98,9 @@ class CsvImportController extends Controller
 
     private function getCsvUser($row)
     {
-        $company = [
+        return [
 
             //Company用の配列作成
-            //$company[company_name] = $row[0]と同じ
             'company_name' => $row[0],
             'company_name_kana' => $row[1],
             'company_name_en' => $row[2],
@@ -115,24 +116,22 @@ class CsvImportController extends Controller
             'fax_no' => $row[12],
             'email' => $row[13],
             'url' => $row[14],
-            /*'del_flg' => $row[15],*/
-            'created_by' => $row[15],
-            /*'created_at' => $row[17],*/
-            'create_function_id' => $row[16],
-            'updated_by' => $row[17],
-            /*'updated_at' => $row[20],*/
-            'update_function_id' => $row[18],
+            'del_flg' => $row[15],
+            'created_by' => $row[16],
+            'created_at' => $row[17],
+            'create_function_id' => $row[18],
+            'updated_by' => $row[19],
+            'updated_at' => $row[20],
+            'update_function_id' => $row[21],
 
         ];
-
-        return $company;
     }
 
-    /*private function registUserCsv(array $company,array $rules)
+    private function registUserCsv(array $company, array $rules)
     {
-        //放送局用
+        Log::debug($company);
         if ($validator = Validator::make($company, $rules)->validate()) {
-            Log::debug($company);
+
             $newcompany = new Company;
             foreach ($company as $key => $value) {
                 $newcompany->$key = $value;
@@ -140,161 +139,6 @@ class CsvImportController extends Controller
 
             $newcompany->save();
         }
-    }*/
-
-    /**
-     * insert()
-     *
-     * 指定されたモデルの連続登録処理
-     *
-     * @param array $keys
-     * @param array $values
-     * @param mixed $obj 登録対象モデル
-     * @param mixed $valid 登録対象バリデータ
-     * @param boolean $flag エラーの出力制御フラグ
-     *
-     * @return array|null $errors エラー一覧
-     */
-    public function registUserCsv(array $company, $valid, $flag=false)
-    {
-        // モデル登録用の連想配列
-        $params = [];
-
-        // エラー配列の初期化
-        $errors = [];
-
-        $keys =array_keys($company);
-        Log::debug($keys);
-
-        $values =array_values($company);
-        Log::debug($values);
-
-        $newcompany = new Company;
-
-        // データの登録処理
-        foreach ($values as $line => $val) {
-            // エラー文字列の初期化
-            $error = '';
-
-            // バリデーション用の連想配列を作成
-            foreach ($keys as $idx => $key) {
-                $params[$key] = $val[$idx] ?? null;
-            }
-            Log::info($params);
-
-            // バリデートの実行
-            $validator = $valid->localValidate($params);
-
-            // バリデーションにエラーが発生した場合はエラー配列に内容を書込み
-            if ($validator->fails()) {
-                $error .= "\n" . $line . "行目のデータにエラーがあります\n";
-                foreach ($validator->errors()->all() as $error) {
-                    $error .= "・" . $error . "\n";
-                }
-                $errors[] = $error;
-            } else {
-                // 新規登録
-
-                foreach ($company as $key => $value) {
-                    $newcompany->$key = $value;
-                }
-                /*Log::info($newcompany);*/
-                $newcompany->save();
-            }
-        }
-
-        // エラーがある場合は出力
-        if (is_countable($errors) && count($errors) > 0 && $flag) {
-            foreach ($errors as $error) {
-                echo $error;
-            }
-            echo "\n";
-        }
-
-        return $errors;
     }
-
-
-
-    /**
-     * insert()
-     *保存動作確認済み
-     */
-    /*public function registUserCsv(array $row, $valid, $flag=false)
-    {
-
-
-
-        $keys = [
-            "company_name",
-            "company_name_kana",
-            "company_name_en",
-            "company_manager_user_id",
-            "dex_res_id",
-            "dex_login_user_id",
-            "dex_login_password_id",
-            "zip_code",
-            "address_1",
-            "address_2",
-            "manager_user_id",
-            "tel_no",
-            "fax_no",
-            "email",
-            "url",
-        ];
-
-        $values = [$row];
-
-
-
-        // モデル登録用の連想配列
-        $params = [];
-
-        // エラー配列の初期化
-        $errors = $row;
-
-        /*$values = $row;
-        Log::info($values);*/
-
-        /*$company = new Company();
-
-        // データの登録処理
-        foreach ($values as $line => $val) {
-            // エラー文字列の初期化
-            $error = '';
-
-            // バリデーション用の連想配列を作成
-            foreach ($keys as $idx => $key) {
-                $params[$key] = $val[$idx] ?? null;
-            }
-            Log::info($params);
-
-
-            // バリデートの実行
-            $validator = $valid->localValidate($params);
-
-            // バリデーションにエラーが発生した場合はエラー配列に内容を書込み
-            if ($validator->fails()) {
-                $error .= "\n" . $line . "行目のデータにエラーがあります\n";
-                foreach ($validator->errors()->all() as $error) {
-                    $error .= "・" . $error . "\n";
-                }
-                $errors[] = $error;
-            } else {
-                // 新規登録
-                $company->create($params);
-            }
-        }*/
-
-        // エラーがある場合は出力
-        /*if (is_countable($errors) && count($errors) > 0 && $flag) {
-            foreach ($errors as $error) {
-                echo $error;
-            }
-            echo "\n";
-        }
-
-        return $errors;
-    }*/
 }
 
