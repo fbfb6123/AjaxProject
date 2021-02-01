@@ -1,6 +1,5 @@
 <h1>Laravel で CSV インポート 演習</h1>
 
-<link rel="stylesheet" type="text/css" href="css/app.css">
 
 
 <script type="text/javascript">
