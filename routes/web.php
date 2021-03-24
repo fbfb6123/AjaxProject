@@ -37,3 +37,5 @@ Route::resource('/sample',SampleController::class);
 Route::namespace('csv')->group(function () {
 Route::get('/form',  [CsvImportController::class, 'index']);
 });
+
+Route::post('/register', 'Auth\RegisterController@register')->name('register');
